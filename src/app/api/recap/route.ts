@@ -1,12 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Profile, Task } from "@/lib/database.types";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
 
 export async function POST(request: NextRequest) {
   try {
@@ -141,20 +139,13 @@ Please provide an end-of-day recap that:
 2. Offers Stoic wisdom relevant to their day
 3. Ends with one specific, actionable suggestion for tomorrow`;
 
-    const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1024,
-      messages: [
-        {
-          role: "user",
-          content: userPrompt,
-        },
-      ],
-      system: systemPrompt,
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const recapText =
-      message.content[0].type === "text" ? message.content[0].text : "";
+    const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
+
+    const result = await model.generateContent(fullPrompt);
+    const response = await result.response;
+    const recapText = response.text();
 
     return NextResponse.json({
       recap: recapText,
@@ -165,39 +156,27 @@ Please provide an end-of-day recap that:
   } catch (error) {
     console.error("Recap error:", error);
 
-    // Handle specific Anthropic API errors
-    if (error instanceof Anthropic.APIError) {
+    // Handle Google Gemini API errors
+    if (error instanceof Error) {
       const errorMessage = error.message || "";
 
-      // Check for credit balance issues
-      if (errorMessage.includes("credit balance is too low")) {
+      if (errorMessage.includes("API key")) {
         return NextResponse.json(
-          { error: "API credit balance is low. Please check your Anthropic billing settings." },
-          { status: 402 }
+          { error: "API authentication error. Please check your Gemini API key." },
+          { status: 401 }
         );
       }
 
-      if (error.status === 429) {
+      if (errorMessage.includes("quota") || errorMessage.includes("rate")) {
         return NextResponse.json(
           { error: "Rate limit exceeded. Please wait a moment and try again." },
           { status: 429 }
         );
       }
-      if (error.status === 401) {
-        return NextResponse.json(
-          { error: "API authentication error. Please contact support." },
-          { status: 500 }
-        );
-      }
-      if (error.status === 400) {
-        return NextResponse.json(
-          { error: "Invalid request to AI service. Please try again." },
-          { status: 400 }
-        );
-      }
+
       return NextResponse.json(
-        { error: `AI service error: ${error.message}` },
-        { status: error.status || 500 }
+        { error: `AI service error: ${errorMessage}` },
+        { status: 500 }
       );
     }
 
