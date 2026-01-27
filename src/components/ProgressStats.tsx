@@ -161,12 +161,16 @@ export default function ProgressStats() {
                 key={item.label}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
-                className="text-center"
+                transition={{
+                  duration: 0.4,
+                  delay: 0.3 + index * 0.1,
+                  ease: [0.4, 0, 0.2, 1]
+                }}
+                className="text-center counter-smooth"
               >
                 <p className="text-xl font-bold" style={{ color: "#D4A574" }}>
                   {item.icon && <span className="mr-1">{item.icon}</span>}
-                  {item.value}
+                  <span className="counter-smooth">{item.value}</span>
                   <span className="text-sm font-normal text-gray-500">
                     {item.suffix}
                   </span>

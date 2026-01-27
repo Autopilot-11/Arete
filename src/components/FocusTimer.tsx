@@ -124,17 +124,18 @@ export default function FocusTimer({ onTaskComplete, pillars, animationDelay = 0
         ) : (
           <motion.div
             key="timer"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="text-center"
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="text-center p-6 -m-6 rounded-2xl focus-active"
           >
             <div className="mb-4">
               <p className="text-gray-600 mb-1">Currently working on:</p>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-xl font-semibold"
+                className="text-xl font-semibold breathing-text"
               >
                 {taskName}
               </motion.p>
@@ -149,25 +150,17 @@ export default function FocusTimer({ onTaskComplete, pillars, animationDelay = 0
               )}
             </div>
 
-            <motion.div
-              className="text-6xl font-mono mb-8 py-4"
+            <div
+              className="text-6xl font-mono mb-8 py-4 breathing-text"
               style={{
                 background: "linear-gradient(135deg, #B8864E 0%, #D4A574 50%, #E8C99B 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
-              animate={{
-                scale: [1, 1.02, 1],
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
             >
               {formatTime(elapsedTime)}
-            </motion.div>
+            </div>
 
             <motion.button
               onClick={handleStop}
