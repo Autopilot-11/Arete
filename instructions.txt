@@ -1,0 +1,44 @@
+"Build 'Aret\uc0\u275 ', a full-stack productivity app using Next.js, Tailwind CSS, Supabase, and Clerk. \
+\
+### THEME & AESTHETIC\
+- Background: #F5F5DC (Beige/Parchment)\
+- Accents: #D4AF37 (Gold)\
+- Typography: Serif for headings, Sans-serif for body.\
+- UI Element: All main containers should have a 'pillar' border or shadow effect.\
+\
+### PHASE 1: FOUNDATION & SECURITY\
+1. Setup Clerk Authentication: Protected routes for /dashboard and /onboarding.\
+2. Supabase Schema: \
+   - 'profiles' table: user_id (UUID), goals_10 (JSON), goals_5 (JSON), top_3 (JSON), day_end_time (String, default '22:00').\
+   - 'tasks' table: user_id (UUID), task_name (Text), tag (Text), start_time (Timestamptz), end_time (Timestamptz), is_manual (Boolean).\
+3. Enable Row Level Security (RLS) on all tables so users only access their own data.\
+\
+### PHASE 2: SOCRATIC ONBOARDING\
+1. Build a multi-step wizard:\
+   - Step A: Input 10 text strings.\
+   - Step B: Select 5 from the 10.\
+   - Step C: Select 3 from the 5.\
+2. Save the final Top 3 to the database and redirect to /dashboard.\
+\
+### PHASE 3: HYBRID TRACKING & DATA VISUALIZATION\
+1. Dashboard Header: Display the 'Top 3 Pillars' prominently.\
+2. Focus Timer: A Start/Stop button that records active tasks.\
+3. Manual Log: A form to add past tasks. \
+   - IF manual: Trigger a centered modal/toast saying 'No cheat?' before saving.\
+4. Visualization: A Recharts Line Chart showing tasks completed per hour for the current day.\
+\
+### PHASE 4: THE DYNAMIC ORACLE (AI)\
+1. Use Vercel AI SDK (Claude 3.5 Sonnet) to create an 'End of Day Recap'.\
+2. Logic: Compare today's tasks against the 'Top 3 Pillars'.\
+3. Tone System: \
+   - If productivity/alignment is high: Encouraging/Supportive tone.\
+   - If productivity is low for 3 consecutive days: Shift to a 'Strict Stoic' tone.\
+\
+### COMPLETION CRITERIA\
+- User can sign up, complete onboarding, and log a task.\
+- Line chart renders real data from Supabase.\
+- AI recap generates a response based on the Top 3 goals.\
+- All Typescript errors are resolved.\
+- If stuck after 20 iterations: Document the blocker in BLOCKERS.md and suggest a fix.\
+\
+Output: <promise>COMPLETE</promise>" --max-iterations 50}
