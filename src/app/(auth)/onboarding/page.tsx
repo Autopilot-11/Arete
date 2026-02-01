@@ -15,10 +15,34 @@ export default function OnboardingPage() {
   const [goals3, setGoals3] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isCheckingProfile, setIsCheckingProfile] = useState(true);
 
   useEffect(() => {
     if (isLoaded && !user) {
       router.push("/sign-in");
+      return;
+    }
+
+    // Check if user already has pillars set
+    const checkExistingProfile = async () => {
+      try {
+        const response = await fetch("/api/profile");
+        const data = await response.json();
+
+        if (data.profile && data.profile.top_3 && data.profile.top_3.length === 3) {
+          // User already has pillars, redirect to dashboard
+          router.push("/dashboard");
+          return;
+        }
+      } catch (error) {
+        console.error("Failed to check profile:", error);
+      } finally {
+        setIsCheckingProfile(false);
+      }
+    };
+
+    if (user) {
+      checkExistingProfile();
     }
   }, [isLoaded, user, router]);
 
@@ -74,7 +98,7 @@ export default function OnboardingPage() {
     }
   };
 
-  if (!isLoaded) {
+  if (!isLoaded || isCheckingProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-xl">Loading...</div>
