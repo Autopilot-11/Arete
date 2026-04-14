@@ -14,11 +14,14 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="p-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold" style={{ fontFamily: "var(--font-playfair), serif", color: "#D4A574" }}>
+      <header className="px-6 py-4 flex justify-between items-center bg-[#FDF8F3]/95 backdrop-blur border-b border-[#D4A574]/20">
+        <h1 className="text-3xl font-bold" style={{ fontFamily: "var(--font-playfair), serif", color: "#D4A574" }}>
           Aretē
         </h1>
-        <div className="space-x-4">
+        <div className="flex items-center space-x-4">
+          <Link href="/features" className="text-gray-700 hover:text-gray-900">
+            Features
+          </Link>
           <Link href="/sign-in" className="text-gray-700 hover:text-gray-900">
             Sign In
           </Link>

@@ -25,20 +25,19 @@ export default function GreekPillar({
   if (variant === "modern") {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{
-          duration: 0.6,
+          duration: 0.5,
           delay,
-          ease: [0.25, 0.1, 0.25, 1],
+          ease: [0.4, 0, 0.2, 1],
         }}
-        whileHover={{ y: -4, transition: { duration: 0.2 } }}
-        className={`relative bg-white rounded-3xl shadow-xl ${className}`}
+        className={`relative bg-white rounded-3xl shadow-xl card-hover-delayed ${className}`}
         style={{
           boxShadow: `
-            0 20px 60px rgba(212, 165, 116, 0.15),
-            0 8px 24px rgba(0, 0, 0, 0.08),
-            inset 0 0 0 1px rgba(212, 165, 116, 0.1)
+            0 20px 60px rgba(212, 165, 116, 0.12),
+            0 8px 24px rgba(0, 0, 0, 0.06),
+            inset 0 0 0 1px rgba(212, 165, 116, 0.08)
           `,
         }}
         {...props}

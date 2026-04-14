@@ -281,11 +281,14 @@ export default function DashboardPage() {
                 return (
                   <motion.div
                     key={task.id}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + index * 0.05 }}
-                    whileHover={{ scale: 1.01, x: 4 }}
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-100 hover:border-[#D4A574]/30 transition-colors"
+                    transition={{
+                      delay: 0.4 + index * 0.05,
+                      duration: 0.4,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-100 hover:border-[#D4A574]/30 card-hover-subtle"
                   >
                     <div>
                       <p className="font-medium text-gray-800">{task.task_name}</p>
